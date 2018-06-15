@@ -4,83 +4,73 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 27
+  compileSdkVersion Versions.compileSdkVersion
 
 
 
 
-    defaultConfig {
-        applicationId "com.javagic.smartalarmclock"
-        minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  defaultConfig {
+    applicationId "com.javagic.smartalarmclock"
+    minSdkVersion 21
+    targetSdkVersion 27
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+  }
 }
-
 
 dependencies {
-    implementationRoomSdk()
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementationRoomSdk()
+  implementation Deps.androidV7
+  implementation Deps.design
+  implementation Deps.supportV13
+  implementation Deps.recyclerView
+  implementation Deps.cardView
+  implementation Deps.multidex
+  implementation Deps.constraintLayout
 
-    //Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+  //Dagger
+  implementation Deps.dagger
+  kapt Deps.daggerCompiler
+  implementation Deps.daggerAndroidSupport
+  implementation Deps.daggerAndroid
+  kapt Deps.daggerAndroidProcessor
 
-    //Mosby
-    implementation "org.devlee.kotlin:mvi:$mviLee"
-    implementation "com.hannesdorfmann.mosby3:mvi:$mosbyVersion"
+  // rx2
+  implementation  Deps.rxjava
+  implementation  Deps.rxAndroid
+  implementation  Deps.rxKotlin
+  implementation  Deps.rxbinding
+  implementation  Deps.rxbindingKotlin
+  implementation  Deps.rxbindingSupport
 
-    // google libraries
+  //jackson
+  implementation Deps.jacksonCore
+  implementation Deps.jacksonAnnotations
+  implementation Deps.jacksonDatabind
+  implementation Deps.jacksonKotlin
 
-    implementation "com.android.support:appcompat-v7:$androidSupportVersion"
-    implementation "com.android.support:design:$androidSupportVersion"
-    implementation "com.android.support:support-v13:$androidSupportVersion"
-    implementation "com.android.support:recyclerview-v7:$androidSupportVersion"
-    implementation "com.android.support:cardview-v7:$androidSupportVersion"
-    implementation "com.android.support:multidex:$multidexVersion"
-    implementation "com.android.support.constraint:constraint-layout:$constraintLayouTVersion"
+  testImplementation Deps.jUnit
+  androidTestImplementation Deps.testRunner
 
-    //IOC
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-
-    // rx2
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava2Version"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid2Version"
-    implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin2Version"
-    implementation "com.jakewharton.rxbinding2:rxbinding:$rxbinding2Version"
-    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxbinding2Version"
-    implementation "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rxbinding2Version"
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxbinding2Version"
-    implementation "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rxbinding2Version"
-
-    // images
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-
-
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+  //coroutines
+  implementation Deps.coroutines
+  implementation Deps.androidCoroutines
 }
-
 
 def implementationRoomSdk() {
-    dependencies {
-        api "android.arch.persistence.room:runtime:1.1.0-alpha3"
-        kapt "android.arch.persistence.room:compiler:1.1.0-alpha3"
-        androidTestCompile "android.arch.persistence.room:testing:1.1.0-alpha3"
-    }
+  dependencies {
+    api Deps.room
+    kapt Deps.roomCompiler
+    androidTestImplementation Deps.roomTesting
+    implementation Deps.roomTesting
+  }
 }
+
