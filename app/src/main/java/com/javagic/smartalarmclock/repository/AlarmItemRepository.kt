@@ -12,5 +12,5 @@ import com.javagic.smartalarmclock.data.AlarmItem
 
 
 interface AlarmItemRepository {
-  fun findById(id: Int):LiveData<AlarmItem>
+  fun all(id: Int): LiveData<List<AlarmItem>>
 }

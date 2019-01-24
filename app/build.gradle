@@ -6,12 +6,9 @@ apply plugin: 'kotlin-android-extensions'
 android {
   compileSdkVersion Versions.compileSdkVersion
 
-
-
-
   defaultConfig {
     applicationId "com.javagic.smartalarmclock"
-    minSdkVersion 21
+    minSdkVersion 22
     targetSdkVersion 27
     versionCode 1
     versionName "1.0"
@@ -44,12 +41,12 @@ dependencies {
   kapt Deps.daggerAndroidProcessor
 
   // rx2
-  implementation  Deps.rxjava
-  implementation  Deps.rxAndroid
-  implementation  Deps.rxKotlin
-  implementation  Deps.rxbinding
-  implementation  Deps.rxbindingKotlin
-  implementation  Deps.rxbindingSupport
+  implementation Deps.rxjava
+  implementation Deps.rxAndroid
+  implementation Deps.rxKotlin
+  implementation Deps.rxbinding
+  implementation Deps.rxbindingKotlin
+  implementation Deps.rxbindingSupport
 
   //jackson
   implementation Deps.jacksonCore
@@ -63,6 +60,20 @@ dependencies {
   //coroutines
   implementation Deps.coroutines
   implementation Deps.androidCoroutines
+
+
+  //leak canary
+  debugImplementation Deps.leakCanary
+  releaseImplementation Deps.leakCanaryOp
+
+  implementation Deps.timber
+
+  //arch
+  api Deps.lifecycleExtensions
+  api Deps.lifecycleRuntime
+  kapt Deps.lifecycleCompiler
+  implementation Deps.overscrollDecorator
+  implementation Deps.swipePicker
 }
 
 def implementationRoomSdk() {

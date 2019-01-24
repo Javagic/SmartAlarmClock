@@ -7,34 +7,18 @@
 
 package com.javagic.smartalarmclock.base
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.TextView
+import android.view.View
 import com.javagic.smartalarmclock.R
 import com.javagic.smartalarmclock.data.AlarmItemMinimal
-import com.javagic.smartalarmclock.ext.view
-import java.util.ArrayList
+import kotlinx.android.synthetic.main.item_alarm.view.*
 
-class AlarmsAdapter(
-    alarms: List<AlarmItemMinimal> = ArrayList()
-) : BaseAdapter<AlarmItemMinimal, BaseViewHolder<AlarmItemMinimal>>(
-    alarms,
-    { parent, viewType -> AlarmViewHolder(R.layout.item_alarm, parent) }
-) {
+//TODO add animations
+class AlarmsAdapter : RecyclerViewAdapter<AlarmItemMinimal>(R.layout.item_alarm, holderFactory = { AlarmItemViewHolder(it) })
 
-
-  class AlarmViewHolder(layout: Int, parent: ViewGroup) : BaseViewHolder<AlarmItemMinimal>(
-      LayoutInflater.from(parent.context).inflate(layout, parent, false)) {
-
-    val name by itemView.view<TextView>(R.id.name)
-
-    override val NO_ITEM: AlarmItemMinimal
-      get() = AlarmItemMinimal()
-
-    override fun bind(item: AlarmItemMinimal) {
-      super.bind(item)
-      name.text = "lalalal"
-    }
+private class AlarmItemViewHolder(view: View) : RecyclerViewAdapter.ViewHolder<AlarmItemMinimal>(view) {
+  override fun bind(item: AlarmItemMinimal) {
+    view.tvName.text = item.name
+    view.tvHour.text = String.format("%02d", item.hour)
+    view.tvMinute.text = String.format("%02d", item.minute)
   }
-
 }

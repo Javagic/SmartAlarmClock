@@ -12,9 +12,8 @@ import com.javagic.smartalarmclock.data.AlarmItem
 import com.javagic.smartalarmclock.data.AlarmItemDao
 import javax.inject.Inject
 
-class AlarmItemDataSource @Inject constructor(var alarmItemDao: AlarmItemDao) : AlarmItemRepository {
-  override fun findById(id: Int): LiveData<AlarmItem> {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+class AlarmItemDataSource @Inject constructor(private var alarmItemDao: AlarmItemDao) : AlarmItemRepository {
+  override fun all(id: Int): LiveData<List<AlarmItem>> = alarmItemDao.allLive()
+
 
 }

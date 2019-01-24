@@ -5,7 +5,7 @@
  on 21.06.18 18:09
  */
 
-package com.javagic.smartalarmclock.ext
+package com.javagic.smartalarmclock.utils.ext
 
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.disposables.DisposableContainer

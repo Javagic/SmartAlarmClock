@@ -7,8 +7,5 @@
 
 package com.javagic.smartalarmclock.data
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 
-
-data class AlarmItemMinimal(val name: String? = null)
+data class AlarmItemMinimal(val name: String? = null, val hour: Int, val minute: Int)

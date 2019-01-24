@@ -5,7 +5,7 @@
  on 21.06.18 19:13
  */
 
-package com.javagic.smartalarmclock.ext
+package com.javagic.smartalarmclock.utils.ext
 
 import android.support.annotation.IdRes
 import android.view.View

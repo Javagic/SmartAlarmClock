@@ -1,17 +1,22 @@
 import Versions.androidSupport
+import Versions.archVersion
+import Versions.canaryVersion
 import Versions.constraintLayoutVersion
 import Versions.daggerVersion
 import Versions.gradle
 import Versions.jUnitVersion
+import Versions.jacksonVersion
 import Versions.kotlin
 import Versions.multidexVersion
+import Versions.overscrollVersion
 import Versions.roomDatabase
 import Versions.rxandroid2Version
 import Versions.rxbinding2Version
 import Versions.rxjava2Version
 import Versions.rxkotlin2Version
+import Versions.swipePickerVersion
 import Versions.testRunnerVersion
-import Versions.jacksonVersion
+import Versions.timberVersion
 
 /*
  Created by Ilya Reznik
@@ -31,17 +36,22 @@ object Versions {
   const val jUnitVersion = "1.1.1"
   const val testRunnerVersion = "1.0.2"
   const val daggerVersion = "2.15"
+  const val canaryVersion = "1.5.4"
+  const val archVersion = "1.1.1"
+  const val timberVersion = "4.7.1"
+  const val overscrollVersion = "1.0.4"
+  const val swipePickerVersion = "1.1.0"
+  const val rxandroid2Version = "2.0.1"
+  const val rxkotlin2Version = "2.1.0"
+  const val rxjava2Version = "2.1.6"
+  const val rxbinding2Version = "2.1.0"
+  const val jacksonVersion = "2.9.5"
 
   const val buildToolsVersion = "27.0.3"
   const val compileSdkVersion = 27
   const val minSdkVersion = 22
   const val playServiceVersion = "11.8.0"
   const val targetSdkVersion = 22
-  const val rxandroid2Version = "2.0.1"
-  const val rxkotlin2Version = "2.1.0"
-  const val rxjava2Version = "2.1.6"
-  const val rxbinding2Version = "2.1.0"
-  const val jacksonVersion = "2.9.5"
 }
 
 object Deps {
@@ -76,5 +86,13 @@ object Deps {
   val jacksonAnnotations = "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
   val jacksonDatabind = "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
   val jacksonKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+  val leakCanary = "com.squareup.leakcanary:leakcanary-android:$canaryVersion"
+  val leakCanaryOp = "com.squareup.leakcanary:leakcanary-android-no-op:$canaryVersion"
+  val timber = "com.jakewharton.timber:timber:$timberVersion"
+  val lifecycleExtensions = "android.arch.lifecycle:extensions:$archVersion"
+  val lifecycleRuntime = "android.arch.lifecycle:runtime:$archVersion"
+  val lifecycleCompiler = "android.arch.lifecycle:compiler:$archVersion"
+  val overscrollDecorator = "me.everything:overscroll-decor-android:$overscrollVersion"
+  val swipePicker = "one.xcorp.widget:swipe-picker:$swipePickerVersion"
 
 }

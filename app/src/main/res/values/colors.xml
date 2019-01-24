@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="transparent">#00ff4043</color>
     <color name="transparentAlarm">#1569bfe1</color>
+    <color name="transparentButton">#1546B8E2</color>
 </resources>
