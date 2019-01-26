@@ -13,12 +13,13 @@ import com.javagic.smartalarmclock.data.AlarmItemMinimal
 import kotlinx.android.synthetic.main.item_alarm.view.*
 
 //TODO add animations
-class AlarmsAdapter : RecyclerViewAdapter<AlarmItemMinimal>(R.layout.item_alarm, holderFactory = { AlarmItemViewHolder(it) })
+class AlarmsAdapter(private val onClick: (Long) -> Unit) : RecyclerViewAdapter<AlarmItemMinimal>(R.layout.item_alarm, holderFactory = { AlarmItemViewHolder(onClick,it) })
 
-private class AlarmItemViewHolder(view: View) : RecyclerViewAdapter.ViewHolder<AlarmItemMinimal>(view) {
+private class AlarmItemViewHolder(val onClick: (Long) -> Unit,view: View) : RecyclerViewAdapter.ViewHolder<AlarmItemMinimal>(view) {
   override fun bind(item: AlarmItemMinimal) {
     view.tvName.text = item.name
-    view.tvHour.text = String.format("%02d", item.hour)
-    view.tvMinute.text = String.format("%02d", item.minute)
+    view.tvHour.text = String.format("%02d", item.timeHour)
+    view.tvMinute.text = String.format("%02d", item.timeMinute)
+    view.coverFrame.setOnClickListener { onClick(item.id) }
   }
 }

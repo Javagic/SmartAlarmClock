@@ -11,6 +11,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.annotation.StringRes
 import com.javagic.smartalarmclock.R
 import com.javagic.smartalarmclock.base.AlarmApp.Companion.instance
@@ -30,8 +31,7 @@ val dateTimeFormatLong: SimpleDateFormat
 
 fun scheduleAlarm(alarm: AlarmItem) {
   val intent = Intent(instance, AlarmService::class.java).apply {
-    putExtra(ALARM_EXTRA, alarm)
-    putExtra("sda", "adf")
+    putExtras(alarm.asBundle())
   }
   val pendingIntent = PendingIntent.getService(instance, alarm.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
   val alarmClockInfo = AlarmManager.AlarmClockInfo(

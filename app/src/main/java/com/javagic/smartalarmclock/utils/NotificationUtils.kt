@@ -29,6 +29,7 @@ private val notificationBuilder by lazy {
       .setSmallIcon(R.drawable.ic_time)
       .setContentText("notificationContent")
       .setAutoCancel(true)
+          .setOngoing(true)
       .setDefaults(Notification.DEFAULT_ALL)
       .setContentTitle("notificationContent")
 }

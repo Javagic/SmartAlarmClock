@@ -8,4 +8,4 @@
 package com.javagic.smartalarmclock.data
 
 
-data class AlarmItemMinimal(val name: String? = null, val hour: Int, val minute: Int)
+data class AlarmItemMinimal(val id : Long, val name: String? = null, val timeHour: Int, val timeMinute: Int)

@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
   private val job = Job()
 
-  val alarms = AlarmApp.database.alarmItem().allLive()
+  val alarms = AlarmApp.database.alarmItem().allMinimal()
 
 
   fun createAlarm(item: AlarmItem) {//remove

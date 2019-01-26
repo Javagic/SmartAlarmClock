@@ -19,10 +19,12 @@ import kotlinx.android.synthetic.main.activity_edit_alarm.*
 class CreateAlarmActivity : BaseActivity<AddAlarmViewModel>() {
 
   companion object {
-    private const val EXTRA_TASK_ID = "CentralizedTemplateActivity.TaskId"
+    private const val EXTRA_ALARM_ID = "CreateAlarmActivity.AlarmId"
 
-    fun start(from: Context) = from.startActivity(
-        Intent(from, CreateAlarmActivity::class.java).apply {}
+    fun start(from: Context, alarmId: Long) = from.startActivity(
+            Intent(from, CreateAlarmActivity::class.java).apply {
+              putExtra(EXTRA_ALARM_ID, alarmId)
+            }
     )
   }
 
@@ -32,6 +34,7 @@ class CreateAlarmActivity : BaseActivity<AddAlarmViewModel>() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_edit_alarm)
     timePicker.setIs24HourView(true)
+    btnCancel.setOnClickListener{ finish() }
     btnCreateAlarm.setOnClickListener {
       viewModel.createAlarm(AlarmItem("", "", timePicker.currentHour, timePicker.currentMinute,0, true, true))//TODO change to actual
       finish()

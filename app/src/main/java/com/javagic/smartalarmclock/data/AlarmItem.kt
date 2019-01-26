@@ -2,11 +2,21 @@ package com.javagic.smartalarmclock.data
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 
 const val ALARM_TABLE = "alarms"
 const val ALARM_EXTRA = "AlarmItem"
+
+const val ALARM_ID_EXTRA = "alarm_id"
+const val ALARM_NAME_EXTRA = "alarm_name"
+const val ALARM_SONG_EXTRA = "alarm_song"
+const val ALARM_HOUR_EXTRA = "alarm_hour"
+const val ALARM_MINUTE_EXTRA = "alarm_minute"
+const val ALARM_SECOND_EXTRA = "alarm_second"
+const val ALARM_ENABLED_EXTRA = "alarm_enabled"
+const val ALARM_TONE_EXTRA = "alarm_tone"
 
 val EMPTY_ALARM_ITEM = AlarmItem("", "", 1, 1, 1, false, false)
 
@@ -33,7 +43,6 @@ data class AlarmItem(val name: String? = null,
     id = parcel.readLong()
   }
 
-  fun toMinimal() = AlarmItemMinimal(name, timeHour, timeMinute)
   override fun writeToParcel(parcel: Parcel, flags: Int) {
     parcel.writeString(name)
     parcel.writeString(song)
@@ -59,4 +68,25 @@ data class AlarmItem(val name: String? = null,
     }
   }
 
+    constructor(bundle: Bundle) : this(
+            bundle.getString(ALARM_NAME_EXTRA),
+            bundle.getString(ALARM_SONG_EXTRA),
+            bundle.getInt(ALARM_HOUR_EXTRA),
+            bundle.getInt(ALARM_MINUTE_EXTRA),
+            bundle.getInt(ALARM_SECOND_EXTRA),
+            bundle.getBoolean(ALARM_ENABLED_EXTRA),
+            bundle.getBoolean(ALARM_TONE_EXTRA)) {
+        bundle.getLong(ALARM_ID_EXTRA)
+    }
+
+    fun asBundle() = Bundle().apply {
+        putString(ALARM_NAME_EXTRA, name)
+        putString(ALARM_SONG_EXTRA, song)
+        putInt(ALARM_HOUR_EXTRA, timeHour)
+        putInt(ALARM_MINUTE_EXTRA, timeMinute)
+        putInt(ALARM_SECOND_EXTRA, second)
+        putBoolean(ALARM_ENABLED_EXTRA, enabled)
+        putBoolean(ALARM_TONE_EXTRA, tone)
+        putLong(ALARM_ID_EXTRA, id)
+    }
 }

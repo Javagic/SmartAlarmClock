@@ -18,7 +18,6 @@ import com.javagic.smartalarmclock.data.AlarmItem
 import com.javagic.smartalarmclock.music.SoundService
 import com.javagic.smartalarmclock.utils.cancelNotification
 import com.javagic.smartalarmclock.utils.ext.viewModel
-import com.javagic.smartalarmclock.utils.showTriggerNotification
 import kotlinx.android.synthetic.main.activity_trigger.*
 
 
@@ -53,7 +52,6 @@ class TriggerActivity : BaseActivity<TriggerViewModel>() {
     viewModel.alarmItem.apply {
       tvTime.text = getString(R.string.trigger_time, timeHour, timeMinute)
     }
-    showTriggerNotification(viewModel.alarmItem)
     btnTurnOff.setOnClickListener {
       finish()
       stopService(Intent(this, SoundService::class.java))

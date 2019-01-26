@@ -19,8 +19,7 @@ import java.util.*
 
 class MainActivity : BaseActivity<MainViewModel>() {
   override fun provideViewModel(): MainViewModel = viewModel()
-  private val container by view<ConstraintLayout>(R.id.container)
-  private val alarmAdapter = AlarmsAdapter()
+  private val alarmAdapter = AlarmsAdapter {CreateAlarmActivity.start(this,it)}
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -32,11 +31,12 @@ class MainActivity : BaseActivity<MainViewModel>() {
       VerticalOverScrollBounceEffectDecorator(RecyclerViewOverScrollDecorAdapter(this))
     }
 
-    viewModel.alarms.observe {
-      alarmAdapter.submitList(it.map { it.toMinimal() })
+    viewModel.alarms.observe { newList ->
+        alarmAdapter.submitList(newList.sortedWith(compareBy({ it.timeHour }, { it.timeMinute })).reversed())//TODO improve  from DataBase
     }
 
     btnCreateAlarm.setOnClickListener {
+      rvAlarms.postDelayed({ rvAlarms.smoothScrollToPosition(0) }, 200)
       viewModel.createAlarm(AlarmItem("", "", Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE),Calendar.getInstance().get(Calendar.SECOND) + 4,false,false))
 //      CreateAlarmActivity.start(this)
     }
