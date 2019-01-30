@@ -9,6 +9,7 @@ import Versions.jacksonVersion
 import Versions.kotlin
 import Versions.multidexVersion
 import Versions.overscrollVersion
+import Versions.permissions
 import Versions.roomDatabase
 import Versions.rxandroid2Version
 import Versions.rxbinding2Version
@@ -46,6 +47,7 @@ object Versions {
   const val rxjava2Version = "2.1.6"
   const val rxbinding2Version = "2.1.0"
   const val jacksonVersion = "2.9.5"
+  const val permissions = "1.1.3"
 
   const val buildToolsVersion = "27.0.3"
   const val compileSdkVersion = 27
@@ -94,5 +96,6 @@ object Deps {
   val lifecycleCompiler = "android.arch.lifecycle:compiler:$archVersion"
   val overscrollDecorator = "me.everything:overscroll-decor-android:$overscrollVersion"
   val swipePicker = "one.xcorp.widget:swipe-picker:$swipePickerVersion"
+  val easyPermissions = "pub.devrel:easypermissions:$permissions"
 
 }

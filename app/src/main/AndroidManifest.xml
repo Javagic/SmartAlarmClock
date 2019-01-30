@@ -4,9 +4,12 @@
     android:installLocation="internalOnly"
     package="com.javagic.smartalarmclock">
 
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />        <!--for htc-->
   <uses-permission android:name="android.permission.WAKE_LOCK" /><!--TODO-->
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-feature android:name="android.hardware.sensor.accelerometer" />
   <application
       android:name=".base.AlarmApp"
       android:allowBackup="true"
@@ -58,8 +61,13 @@
         android:theme="@style/AppTheme" />
     <activity
         android:name=".trigger.TriggerActivity"
-        android:screenOrientation="portrait"
         android:clearTaskOnLaunch="true"
+        android:launchMode="singleTop"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme" />
+    <activity
+        android:name=".music.SelectMusicActivity"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme" />
   </application>
 

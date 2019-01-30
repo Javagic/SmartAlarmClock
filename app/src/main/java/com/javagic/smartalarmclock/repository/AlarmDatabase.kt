@@ -14,7 +14,7 @@ private const val DB_NAME = "DriverDatabase"
 abstract class AlarmDatabase : RoomDatabase() {
 
 
-  abstract fun alarmItem(): AlarmItemDao
+  abstract fun alarmDao(): AlarmItemDao
 
   companion object {
 

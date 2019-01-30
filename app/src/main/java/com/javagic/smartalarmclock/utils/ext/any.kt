@@ -11,7 +11,9 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
 import android.os.Bundle
+import android.os.Vibrator
 import android.support.annotation.StringRes
 import com.javagic.smartalarmclock.R
 import com.javagic.smartalarmclock.base.AlarmApp.Companion.instance
@@ -25,6 +27,7 @@ import java.util.*
 fun string(@StringRes stringId: Int) = instance.getString(stringId) ?: ""
 fun tag() = "SmartAlarmClock"
 fun alarmManager() = instance.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+fun vibrator() = instance.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
 val dateTimeFormatLong: SimpleDateFormat
   get() = SimpleDateFormat(string(R.string.date_time_format_long), Locale(string(R.string.lang)))
@@ -56,3 +59,6 @@ val AlarmItem.nextTrigger: Calendar
       add(Calendar.DATE, 1)
     }
   }
+
+val defaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+    ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)

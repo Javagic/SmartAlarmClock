@@ -14,7 +14,6 @@ import com.javagic.smartalarmclock.data.AlarmItem
 import com.javagic.smartalarmclock.music.SoundService
 import com.javagic.smartalarmclock.trigger.TriggerActivity
 import com.javagic.smartalarmclock.utils.ext.tag
-import com.javagic.smartalarmclock.utils.showTriggerNotification
 import timber.log.Timber
 
 class AlarmService : IntentService(AlarmService::class.simpleName) {
@@ -23,9 +22,7 @@ class AlarmService : IntentService(AlarmService::class.simpleName) {
     Timber.tag(tag()).i("AlarmService is triggered")
     intent ?: return
     val alarm = AlarmItem(intent.extras)
-    TriggerActivity.start(instance, alarm)
-    showTriggerNotification(alarm)
-    startService(Intent(this, SoundService::class.java))
+    startService(Intent(instance, SoundService::class.java).putExtras(alarm.asBundle()))
   }
 
 }

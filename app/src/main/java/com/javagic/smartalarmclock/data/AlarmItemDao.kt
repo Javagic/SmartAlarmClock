@@ -19,4 +19,7 @@ abstract class AlarmItemDao : BaseDao<AlarmItem> {
 
   @Query("SELECT id, name, timeHour, timeMinute   FROM $ALARM_TABLE")
   abstract fun allMinimal(): LiveData<List<AlarmItemMinimal>>
+
+  @Query("SELECT * FROM $ALARM_TABLE WHERE id =:alarmId")
+  abstract fun get(alarmId: Long): AlarmItem
 }

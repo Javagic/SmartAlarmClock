@@ -18,7 +18,7 @@ const val ALARM_SECOND_EXTRA = "alarm_second"
 const val ALARM_ENABLED_EXTRA = "alarm_enabled"
 const val ALARM_TONE_EXTRA = "alarm_tone"
 
-val EMPTY_ALARM_ITEM = AlarmItem("", "", 1, 1, 1, false, false)
+val EMPTY_ALARM_ITEM = AlarmItem("", "", 1, 1, 1, false, "")
 
 @Entity(tableName = ALARM_TABLE)
 data class AlarmItem(val name: String? = null,
@@ -27,7 +27,7 @@ data class AlarmItem(val name: String? = null,
                      val timeMinute: Int,
                      val second: Int,
                      val enabled: Boolean,
-                     val tone: Boolean
+                     val musicUri: String
 ) : Parcelable {
   @PrimaryKey(autoGenerate = true)
   var id: Long = 0
@@ -39,8 +39,32 @@ data class AlarmItem(val name: String? = null,
       parcel.readInt(),
       parcel.readInt(),
       parcel.readByte() != 0.toByte(),
-      parcel.readByte() != 0.toByte()) {
+      parcel.readString()) {
     id = parcel.readLong()
+  }
+
+
+  constructor(bundle: Bundle) : this(
+      bundle.getString(ALARM_NAME_EXTRA),
+      bundle.getString(ALARM_SONG_EXTRA),
+      bundle.getInt(ALARM_HOUR_EXTRA),
+      bundle.getInt(ALARM_MINUTE_EXTRA),
+      bundle.getInt(ALARM_SECOND_EXTRA),
+      bundle.getBoolean(ALARM_ENABLED_EXTRA),
+      bundle.getString(ALARM_TONE_EXTRA)) {
+    bundle.getLong(ALARM_ID_EXTRA)
+  }
+
+
+  fun asBundle() = Bundle().apply {
+    putString(ALARM_NAME_EXTRA, name)
+    putString(ALARM_SONG_EXTRA, song)
+    putInt(ALARM_HOUR_EXTRA, timeHour)
+    putInt(ALARM_MINUTE_EXTRA, timeMinute)
+    putInt(ALARM_SECOND_EXTRA, second)
+    putBoolean(ALARM_ENABLED_EXTRA, enabled)
+    putString(ALARM_TONE_EXTRA, musicUri)
+    putLong(ALARM_ID_EXTRA, id)
   }
 
   override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -50,7 +74,7 @@ data class AlarmItem(val name: String? = null,
     parcel.writeInt(timeMinute)
     parcel.writeInt(second)
     parcel.writeByte(if (enabled) 1 else 0)
-    parcel.writeByte(if (tone) 1 else 0)
+    parcel.writeString(musicUri)
     parcel.writeLong(id)
   }
 
@@ -67,26 +91,4 @@ data class AlarmItem(val name: String? = null,
       return arrayOfNulls(size)
     }
   }
-
-    constructor(bundle: Bundle) : this(
-            bundle.getString(ALARM_NAME_EXTRA),
-            bundle.getString(ALARM_SONG_EXTRA),
-            bundle.getInt(ALARM_HOUR_EXTRA),
-            bundle.getInt(ALARM_MINUTE_EXTRA),
-            bundle.getInt(ALARM_SECOND_EXTRA),
-            bundle.getBoolean(ALARM_ENABLED_EXTRA),
-            bundle.getBoolean(ALARM_TONE_EXTRA)) {
-        bundle.getLong(ALARM_ID_EXTRA)
-    }
-
-    fun asBundle() = Bundle().apply {
-        putString(ALARM_NAME_EXTRA, name)
-        putString(ALARM_SONG_EXTRA, song)
-        putInt(ALARM_HOUR_EXTRA, timeHour)
-        putInt(ALARM_MINUTE_EXTRA, timeMinute)
-        putInt(ALARM_SECOND_EXTRA, second)
-        putBoolean(ALARM_ENABLED_EXTRA, enabled)
-        putBoolean(ALARM_TONE_EXTRA, tone)
-        putLong(ALARM_ID_EXTRA, id)
-    }
 }

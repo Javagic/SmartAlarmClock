@@ -74,6 +74,7 @@ dependencies {
   kapt Deps.lifecycleCompiler
   implementation Deps.overscrollDecorator
   implementation Deps.swipePicker
+  implementation Deps.easyPermissions
 }
 
 def implementationRoomSdk() {

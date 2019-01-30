@@ -10,6 +10,6 @@ package com.javagic.smartalarmclock.base
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.ViewModel
 
-class BaseViewModel : ViewModel(), LifecycleObserver {
+open class BaseViewModel : ViewModel(), LifecycleObserver {
 
 }

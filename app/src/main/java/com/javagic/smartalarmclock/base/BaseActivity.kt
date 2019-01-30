@@ -1,9 +1,3 @@
-/*
- Created by Ilya Reznik
- reznikid@altarix.ru
- skype be3bapuahta
- on 21.06.18 17:55
- */
 
 package com.javagic.smartalarmclock.base
 
@@ -13,8 +7,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.support.v7.app.AppCompatActivity
+import com.javagic.smartalarmclock.utils.ext.bind
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity<out T : ViewModel> : AppCompatActivity() {
+
+  private val disposable = CompositeDisposable()
 
   protected val viewModel: T by lazy {
     provideViewModel()
@@ -28,7 +27,10 @@ abstract class BaseActivity<out T : ViewModel> : AppCompatActivity() {
     fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     fragmentTransaction.add(containerViewId, fragment)
     fragmentTransaction.commit()
+  }
 
+  protected fun <T> Observable<T>.observe(block: (T) -> Unit) {
+    this.subscribe { block(it) }.bind(disposable)
   }
 
   protected fun <T> LiveData<T>.observe(block: (T) -> Unit) {

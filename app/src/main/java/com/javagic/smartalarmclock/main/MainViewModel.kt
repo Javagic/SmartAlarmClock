@@ -19,12 +19,12 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
   private val job = Job()
 
-  val alarms = AlarmApp.database.alarmItem().allMinimal()
+  val alarms = AlarmApp.database.alarmDao().allMinimal()
 
 
   fun createAlarm(item: AlarmItem) {//remove
     GlobalScope.launch(Dispatchers.IO) {
-      item.id = AlarmApp.database.alarmItem().insert(item)
+      item.id = AlarmApp.database.alarmDao().insert(item)
       scheduleAlarm(item)
     }
   }

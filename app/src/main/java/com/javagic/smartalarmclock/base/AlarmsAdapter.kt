@@ -20,6 +20,6 @@ private class AlarmItemViewHolder(val onClick: (Long) -> Unit,view: View) : Recy
     view.tvName.text = item.name
     view.tvHour.text = String.format("%02d", item.timeHour)
     view.tvMinute.text = String.format("%02d", item.timeMinute)
-    view.coverFrame.setOnClickListener { onClick(item.id) }
+    itemView.setOnClickListener { onClick(item.id) }
   }
 }
