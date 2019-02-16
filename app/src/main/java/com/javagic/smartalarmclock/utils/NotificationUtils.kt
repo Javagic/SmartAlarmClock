@@ -19,6 +19,7 @@ import com.javagic.smartalarmclock.base.AlarmApp
 import com.javagic.smartalarmclock.base.AlarmApp.Companion.instance
 import com.javagic.smartalarmclock.data.AlarmItem
 import com.javagic.smartalarmclock.trigger.TriggerActivity
+import com.javagic.smartalarmclock.utils.ext.string
 
 val notificationManager get() = AlarmApp.instance.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 private const val NEW_TASKS_CHANNEL_ID = "NewTaskNotificationChannel"
@@ -26,12 +27,12 @@ const val NEW_TASKS_NOTIFICATION_ID = 312
 
 private val notificationBuilder by lazy {
   NotificationCompat.Builder(AlarmApp.instance, NEW_TASKS_CHANNEL_ID)
-      .setSmallIcon(R.drawable.ic_time)
-      .setContentText("notificationContent")
+      .setSmallIcon(R.drawable.ic_launcher)
+      .setContentTitle(string(R.string.notification_title))
+      .setContentText(string(R.string.notification_content))
       .setAutoCancel(true)
       .setOngoing(true)
       .setDefaults(Notification.DEFAULT_ALL)
-      .setContentTitle("notificationTitle")
 }
 
 fun cancelNotification() {

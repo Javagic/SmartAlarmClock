@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp"
     android:background="@drawable/alarm_item_background"
-    android:padding="20dp"
     tools:background="@drawable/main_background"
-                                             android:layout_marginStart="10dp"
-                                             android:layout_marginEnd="10dp"
     >
   <TextView
       android:id="@+id/tvName"
@@ -35,7 +34,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="5dp"
-      android:text="@string/create_colon"
+      android:text="@string/edit_colon"
       android:textSize="45sp"
       app:layout_constraintBottom_toBottomOf="@id/tvHour"
       app:layout_constraintEnd_toStartOf="@id/tvMinute"
@@ -64,6 +63,16 @@
       android:textSize="20sp"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/tvHour"
-      tools:text="@string/create_time_left"
+      tools:text="@string/edit_time_left"
+      />
+  <Switch
+      android:id="@+id/switchAlarm"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      android:padding="20dp"
+      android:checked="true"
       />
 </android.support.constraint.ConstraintLayout>

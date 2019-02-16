@@ -9,28 +9,12 @@ package com.javagic.smartalarmclock.main
 
 import android.arch.lifecycle.ViewModel
 import com.javagic.smartalarmclock.base.AlarmApp
-import com.javagic.smartalarmclock.data.AlarmItem
-import com.javagic.smartalarmclock.utils.ext.scheduleAlarm
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
   private val job = Job()
 
-  val alarms = AlarmApp.database.alarmDao().allMinimal()
-
-
-  fun createAlarm(item: AlarmItem) {//remove
-    GlobalScope.launch(Dispatchers.IO) {
-      item.id = AlarmApp.database.alarmDao().insert(item)
-      scheduleAlarm(item)
-    }
-  }
-  fun deleteAlarm() {
-
-  }
+  val alarms = AlarmApp.database.alarmDao().allData()
 
   override fun onCleared() {
     job.cancel()

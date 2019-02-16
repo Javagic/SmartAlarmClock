@@ -21,13 +21,13 @@ const val ALARM_TONE_EXTRA = "alarm_tone"
 val EMPTY_ALARM_ITEM = AlarmItem("", "", 1, 1, 1, false, "")
 
 @Entity(tableName = ALARM_TABLE)
-data class AlarmItem(val name: String? = null,
-                     val song: String,
-                     val timeHour: Int,
-                     val timeMinute: Int,
-                     val second: Int,
-                     val enabled: Boolean,
-                     val musicUri: String
+data class AlarmItem(var name: String? = null,
+                     var song: String,
+                     var timeHour: Int,
+                     var timeMinute: Int,
+                     var second: Int,
+                     var enabled: Boolean = true,
+                     var musicUri: String
 ) : Parcelable {
   @PrimaryKey(autoGenerate = true)
   var id: Long = 0

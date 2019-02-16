@@ -9,6 +9,7 @@ package com.javagic.smartalarmclock.music
 
 import android.app.Service
 import android.content.Intent
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.IBinder
@@ -25,8 +26,8 @@ import java.io.File
 
 
 class SoundService : Service() {
-  private val mediaPlayer by lazy { MediaPlayer.create(this, R.raw.bug) }
-  private val vibrationPattern: LongArray = arrayOf<Long>(0, 800, 300).toLongArray()
+  private val mediaPlayer by lazy { MediaPlayer.create(this, R.raw.sound_default) }
+  private val vibrationPattern: LongArray = arrayOf<Long>(0, 400, 800).toLongArray()
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     intent?.apply {
       val alarmItem = AlarmItem(extras)

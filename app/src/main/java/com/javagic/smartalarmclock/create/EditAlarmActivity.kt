@@ -12,59 +12,76 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.PermissionChecker
+import android.widget.TimePicker
 import android.widget.Toast
 import com.javagic.smartalarmclock.R
+import com.javagic.smartalarmclock.base.AlarmApp
 import com.javagic.smartalarmclock.base.AlarmApp.Companion.database
 import com.javagic.smartalarmclock.base.BaseActivity
-import com.javagic.smartalarmclock.data.AlarmItem
 import com.javagic.smartalarmclock.music.EXTRA_MUSIC_ITEM
 import com.javagic.smartalarmclock.music.MusicItem
 import com.javagic.smartalarmclock.music.SelectMusicActivity
-import com.javagic.smartalarmclock.utils.ext.string
-import com.javagic.smartalarmclock.utils.ext.viewModel
-import com.javagic.smartalarmclock.utils.ext.withMusicPermission
+import com.javagic.smartalarmclock.repository.AlarmRepository
+import com.javagic.smartalarmclock.utils.ext.*
 import kotlinx.android.synthetic.main.activity_edit_alarm.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.EasyPermissions
 
 const val MUSIC_PERMISSIONS_CODE = 100
 const val SELECT_RINGTONE_CODE = 101
 const val SELECT_MUSIC_CODE = 102
 
-class CreateAlarmActivity : BaseActivity<AddAlarmViewModel>() {
+class CreateAlarmActivity : BaseActivity<EditAlarmViewModel>() {
 
   companion object {
     private const val EXTRA_ALARM_ID = "CreateAlarmActivity.AlarmId"
 
-    fun start(from: Context, alarmId: Long) = from.startActivity(
+    fun start(from: Context, alarmId: Long = 0) = from.startActivity(
         Intent(from, CreateAlarmActivity::class.java).apply {
           putExtra(EXTRA_ALARM_ID, alarmId)
         }
     )
   }
 
-  override fun provideViewModel(): AddAlarmViewModel = viewModel()
+  override fun provideViewModel(): EditAlarmViewModel = viewModel()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_edit_alarm)
-    intent.getLongExtra(EXTRA_ALARM_ID, 0).let {
-      if (it != 0L) {
-        GlobalScope.launch(Dispatchers.IO) {
-          viewModel.alarm = database.alarmDao().get(it)
-          timePicker.currentHour = viewModel.alarm.timeHour
-          timePicker.currentMinute = viewModel.alarm.timeMinute
-        }
+    timePicker.setIs24HourView(true)
+    with(viewModel) {
+      ui {
+        alarm = if (intent.getLongExtra(EXTRA_ALARM_ID, 0) != 0L)
+          asyncDb { database.alarmDao().get(intent.getLongExtra(EXTRA_ALARM_ID, 0)) }.await()
+        else AlarmRepository.createAlarm()
+        timePicker.hours = alarm.timeHour
+        timePicker.minutes = alarm.timeMinute
+        musicItem.postValue(MusicItem(
+            RingtoneManager.getRingtone(AlarmApp.instance, defaultUri).getTitle(AlarmApp.instance),
+            "",
+            ""
+        ))
+      }
+      musicItem.observe {
+        tvMusicTitle.text = it.name
       }
     }
-    timePicker.setIs24HourView(true)
-    btnCancel.setOnClickListener { finish() }
+    btnCancel.setOnClickListener {
+      finish()
+    }
     btnCreateAlarm.setOnClickListener {
-      viewModel.createAlarm(AlarmItem("", "", timePicker.currentHour, timePicker.currentMinute, 0, true, ""))//TODO change to actual
+      with(viewModel.alarm) {
+        musicUri = viewModel.musicItem.value!!.uri
+        song = viewModel.musicItem.value!!.name
+        timeHour = timePicker.hours
+        timeMinute = timePicker.minutes
+        enabled = true
+        second = 0
+        AlarmRepository.updateAlarm(this)
+        AlarmRepository.scheduleAlarm(this)
+      }
       finish()
     }
     btnChooseRingtone.setOnClickListener {
@@ -75,9 +92,6 @@ class CreateAlarmActivity : BaseActivity<AddAlarmViewModel>() {
       withMusicPermission(MUSIC_PERMISSIONS_CODE) {
         startActivityForResult(Intent(this, SelectMusicActivity::class.java), SELECT_MUSIC_CODE)
       }
-    }
-    viewModel.musicItem.observe {
-      tvMusicTitle.text = it.name
     }
   }
 
@@ -102,3 +116,19 @@ class CreateAlarmActivity : BaseActivity<AddAlarmViewModel>() {
     }
   }
 }
+
+var TimePicker.minutes: Int
+  get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) minute
+  else currentMinute
+  set(value) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) minute = value
+    else currentMinute = value
+  }
+
+var TimePicker.hours: Int
+  get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) hour
+  else currentHour
+  set(value) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) hour = value
+    else currentHour = value
+  }

@@ -6,18 +6,21 @@ import com.javagic.smartalarmclock.R
 import com.javagic.smartalarmclock.base.AlarmsAdapter
 import com.javagic.smartalarmclock.base.BaseActivity
 import com.javagic.smartalarmclock.create.CreateAlarmActivity
-import com.javagic.smartalarmclock.data.AlarmItem
+import com.javagic.smartalarmclock.repository.AlarmRepository.cancelAlarm
+import com.javagic.smartalarmclock.repository.AlarmRepository.scheduleAlarm
 import com.javagic.smartalarmclock.utils.ItemDecorator
 import com.javagic.smartalarmclock.utils.ext.viewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
 import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter
-import java.util.*
 
 
 class MainActivity : BaseActivity<MainViewModel>() {
   override fun provideViewModel(): MainViewModel = viewModel()
-  private val alarmAdapter = AlarmsAdapter { CreateAlarmActivity.start(this, it) }
+  private val alarmAdapter = AlarmsAdapter(onClick = { CreateAlarmActivity.start(this, it) },
+      onChecked = { checked, item -> if (checked) scheduleAlarm(item) else cancelAlarm(item.id) }
+  )
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -34,8 +37,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     btnCreateAlarm.setOnClickListener {
       rvAlarms.postDelayed({ rvAlarms.smoothScrollToPosition(0) }, 200)
-      viewModel.createAlarm(AlarmItem("", "", Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + 4, false, ""))
-//      CreateAlarmActivity.start(this)
+//      viewModel.createAlarm(AlarmItem("", "", Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + 4, false, ""))
+      CreateAlarmActivity.start(this)
     }
   }
 

@@ -8,19 +8,17 @@
 package com.javagic.smartalarmclock.utils.ext
 
 import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.media.RingtoneManager
-import android.os.Bundle
 import android.os.Vibrator
 import android.support.annotation.StringRes
+import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.javagic.smartalarmclock.R
 import com.javagic.smartalarmclock.base.AlarmApp.Companion.instance
-import com.javagic.smartalarmclock.data.ALARM_EXTRA
-import com.javagic.smartalarmclock.data.AlarmItem
-import com.javagic.smartalarmclock.manager.AlarmService
-import timber.log.Timber
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,37 +26,14 @@ fun string(@StringRes stringId: Int) = instance.getString(stringId) ?: ""
 fun tag() = "SmartAlarmClock"
 fun alarmManager() = instance.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 fun vibrator() = instance.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+fun sensor() = instance.getSystemService(AppCompatActivity.SENSOR_SERVICE) as android.hardware.SensorManager
+fun toast(message: String) = Toast.makeText(instance, message, Toast.LENGTH_LONG).show()
+fun ui(block: suspend CoroutineScope.() -> Unit) = GlobalScope.launch(Main, block = block)
+fun <T> asyncDb(block: suspend CoroutineScope.() -> T): Deferred<T> = GlobalScope.async(IO, block = block)
 
 val dateTimeFormatLong: SimpleDateFormat
   get() = SimpleDateFormat(string(R.string.date_time_format_long), Locale(string(R.string.lang)))
 
-fun scheduleAlarm(alarm: AlarmItem) {
-  val intent = Intent(instance, AlarmService::class.java).apply {
-    putExtras(alarm.asBundle())
-  }
-  val pendingIntent = PendingIntent.getService(instance, alarm.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
-  val alarmClockInfo = AlarmManager.AlarmClockInfo(
-      alarm.nextTrigger.timeInMillis,
-      pendingIntent)
-  alarmManager().setAlarmClock(alarmClockInfo, pendingIntent)
-  Timber.tag(tag()).i("Alarm is scheduled to %s", dateTimeFormatLong.format(Date(alarm.nextTrigger.timeInMillis)))
-}
-
-fun cancelAlarm(alarm: AlarmItem) {
-  val intent = Intent(instance, AlarmService::class.java)
-  val pendingIntent = PendingIntent.getService(instance, alarm.id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
-  alarmManager().cancel(pendingIntent)
-}
-
-val AlarmItem.nextTrigger: Calendar
-  get() = Calendar.getInstance().apply {
-    set(Calendar.HOUR_OF_DAY, timeHour)
-    set(Calendar.MINUTE, timeMinute)
-    set(Calendar.SECOND, second)
-    if (timeInMillis - System.currentTimeMillis() < 0) {
-      add(Calendar.DATE, 1)
-    }
-  }
 
 val defaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
     ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)

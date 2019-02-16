@@ -2,6 +2,7 @@ package com.javagic.smartalarmclock.trigger
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.hardware.Sensor
 import android.os.Bundle
 import android.view.WindowManager
@@ -10,6 +11,7 @@ import com.javagic.smartalarmclock.base.BaseActivity
 import com.javagic.smartalarmclock.data.ALARM_EXTRA
 import com.javagic.smartalarmclock.data.AlarmItem
 import com.javagic.smartalarmclock.music.SoundService
+import com.javagic.smartalarmclock.utils.ext.sensor
 import com.javagic.smartalarmclock.utils.ext.tag
 import com.javagic.smartalarmclock.utils.ext.viewModel
 import kotlinx.android.synthetic.main.activity_trigger.*
@@ -17,10 +19,11 @@ import timber.log.Timber
 
 
 class TriggerActivity : BaseActivity<TriggerViewModel>() {
+  private val sensorListener = SensorManager()
 
   companion object {
     fun start(from: Context, alarmItem: AlarmItem) = from.startActivity(
-        intent(from, alarmItem)
+        intent(from, alarmItem).apply { flags = FLAG_ACTIVITY_NEW_TASK }
     )
 
     fun intent(from: Context, alarmItem: AlarmItem) = Intent(from, TriggerActivity::class.java).apply {
@@ -49,8 +52,12 @@ class TriggerActivity : BaseActivity<TriggerViewModel>() {
     btnTurnOff.setOnClickListener {
       alarmWentOff()
     }
-    val sensorListener = SensorManager()
-    (getSystemService(SENSOR_SERVICE) as android.hardware.SensorManager).apply {
+
+  }
+
+  override fun onResume() {
+    super.onResume()
+    sensor().apply {
       registerListener(sensorListener, getDefaultSensor(Sensor.TYPE_ACCELEROMETER), android.hardware.SensorManager.SENSOR_DELAY_NORMAL)
     }
     sensorListener.events.observe {
@@ -62,6 +69,11 @@ class TriggerActivity : BaseActivity<TriggerViewModel>() {
         alarmWentOff()
       }
     }
+  }
+
+  override fun onPause() {
+    super.onPause()
+    sensor().unregisterListener(sensorListener)
   }
 
   private fun alarmWentOff() {
