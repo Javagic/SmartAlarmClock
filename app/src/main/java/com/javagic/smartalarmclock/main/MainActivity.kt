@@ -32,6 +32,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
       "test1"
       "test1"
       "test1"
+      "test1"
     }
 
     viewModel.alarms.observe { newList ->
