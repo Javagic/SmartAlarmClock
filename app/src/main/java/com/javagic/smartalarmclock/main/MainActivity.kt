@@ -30,6 +30,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
       addItemDecoration(ItemDecorator(itemOffset = 15))
       VerticalOverScrollBounceEffectDecorator(RecyclerViewOverScrollDecorAdapter(this))
       "test1"
+      "test1"
     }
 
     viewModel.alarms.observe { newList ->
